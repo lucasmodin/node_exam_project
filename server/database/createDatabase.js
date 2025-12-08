@@ -10,7 +10,7 @@ if (deleteMode) {
 }
 
 db.exec(`
-//agv's (automated guided vehicles)
+-- agv's (automated guided vehicles)
 CREATE TABLE IF NOT EXISTS agvs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS agvs (
 );
 
 
-//jobs
+-- jobs
 CREATE TABLE IF NOT EXISTS jobs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     FOREIGN KEY (assigned_agv) REFERENCES agvs(id)
 );
 
-//events
+-- events
 CREATE TABLE IF NOT EXISTS events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     job_id INTEGER,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS events (
 );
 
 
-//user
+-- user
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
