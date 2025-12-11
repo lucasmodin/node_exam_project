@@ -57,7 +57,7 @@ if (deleteMode) {
     //users
     db.exec(`
         INSERT INTO users (username, password_hash, role) VALUES
-        ('admin', '$2a$12$vv28BRSbY0wacM4FL.WXo.HDvRGgdwIEdL1FMxXDXEnXIhyl3T3i.', 'admin'),
+        ('admin', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'admin'),
         ('supervisor', '$2a$12$QccTkMM5UbRUH/zMFu2DW.DuFnnM/dcuqNzlNf8g23s.FsbDShma6', 'supervisor'),
         ('operator1', '$2a$12$H62/h70VfXPrJbfODZxmM.ulrJ3ZBvNigUVUWGpquX9T6k2NAEIae', 'operator');
     `);
