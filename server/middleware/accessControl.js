@@ -32,7 +32,7 @@ export function isSupervisor(req, res, next) {
     }
 
     return res.status(403).send({
-        error: "Unauthorized. You are not logged in"
+        error: "Unauthorized. Supervisor access required"
     });
 }
 
@@ -50,6 +50,6 @@ export function isAdmin(req, res, next) {
     }
 
     return res.status(403).send({
-        error: "Unauthorized. You are not logged in"
+        error: "Unauthorized. Admin access required"
     });
 }
