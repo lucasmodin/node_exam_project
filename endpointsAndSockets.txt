@@ -1,0 +1,34 @@
+
+Endpoints:
+    agvs:
+    GET /agvs (isOperator)
+    GET /agvs/id (isOperator)
+    PACTH /agvs/id/ (to move an agv) (isOperator)
+    PATCH /agvs/id/status (isOperator)
+    POST /agvs (isAdmin)
+    DELETE /agvs (isAdmin)
+
+    jobs    
+    GET /jobs (isOperator)
+    GET /jobs/id (isOperator)
+    POST /jobs (isOperator)
+    PATCH /jobs/id/stage (isSupervisor)
+    PATCH /jobs/id/ (isSupervisor)
+    DELETE /jobs/id (isAdmin)
+
+    events
+    GET /events (isOperator)
+    POST /events (isSupervisor)
+
+Sockets:
+    from client to server:
+    agv:goToStation
+    job:advance
+    job:create
+    event:add
+
+    from server to client:
+    agv:update
+    jobs:update
+    events:new
+    system:message
