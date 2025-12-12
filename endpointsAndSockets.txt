@@ -3,7 +3,6 @@ Endpoints:
     agvs:
     GET /agvs (isOperator)
     GET /agvs/id (isOperator)
-    PACTH /agvs/id/ (to move an agv) (isOperator)
     PATCH /agvs/id/status (isOperator)
     POST /agvs (isAdmin)
     DELETE /agvs (isAdmin)
@@ -11,14 +10,10 @@ Endpoints:
     jobs    
     GET /jobs (isOperator)
     GET /jobs/id (isOperator)
-    POST /jobs (isOperator)
-    PATCH /jobs/id/stage (isSupervisor)
-    PATCH /jobs/id/ (isSupervisor)
     DELETE /jobs/id (isAdmin)
 
     events
     GET /events (isOperator)
-    POST /events (isSupervisor)
 
 Sockets:
     from client to server:

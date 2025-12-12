@@ -41,6 +41,9 @@ app.use("/auth", authLimiter);
 import authRouter from './routes/authRouter.js';
 app.use("/auth", authRouter);
 
+import agvRouter from './routes/agvs/agvRouter.js';
+app.use("/agvs", agvRouter);
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
