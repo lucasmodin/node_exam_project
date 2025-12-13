@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isOperator } from "../../middleware/accessControl";
+import { isOperator } from "../../middleware/accessControl.js";
 import db from '../../database/connection.js';
 
 const router = Router();

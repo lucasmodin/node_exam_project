@@ -1,6 +1,6 @@
-import db from '../../database/connection.js';
-import { authorizeRoles } from '../../middleware/accessControlSocket.js';
-import { Roles } from '../../data/roles.js';
+import db from '../database/connection.js';
+import { authorizeRoles } from '../middleware/accessControlSocket.js';
+import { Roles } from '../data/roles.js';
 
 export default function eventHandlers(io, socket) {
     
