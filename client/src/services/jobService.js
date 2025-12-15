@@ -1,5 +1,5 @@
 import { jobs } from '../stores/jobStore.js';
-import { fetchGet } from '../util/fetchUtil.js';
+import { fetchDelete, fetchGet } from '../util/fetchUtil.js';
 
 export async function loadJobs() {
     const result = await fetchGet("/jobs");
@@ -25,4 +25,14 @@ export async function updateJob(updatedJob) {
                 : job
         ); 
     });
+}
+
+export async function deleteJob(jobId) {
+    const result = await fetchDelete(`/jobs/${jobId}`);
+
+    if (!result?.error) {
+        jobs.update(current => current.filter(job => job.id !== jobId));
+    }
+
+    return result;
 }
