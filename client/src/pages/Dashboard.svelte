@@ -26,45 +26,81 @@
         <AgvMap />
     </div>
 
-    <div class="side-panel">
-        <section class="panel">
+    <aside class="side-panel">
+        <section class="panel agv-panel">
+            <h3>AGVs</h3>
             <AgvList />
         </section>
 
-        <section class="panel">
+        <section class="panel job-panel">
+            <h3>Jobs</h3>
             <JobList />
         </section>
 
-        <section class="panel">
+        <section class="panel event-panel">
+            <h3>Events</h3>
             <EventFeed />
         </section>
-    </div>
+    </aside>
 </div>
 
 <style>
-    .dashboard {
+ .dashboard {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 4fr) minmax(320px, 1.3fr);
     height: calc(100vh - 60px);
+    background: #0b0b0b;
 }
+
 
 .map-area {
     background: #111;
-    border-right: 1px solid #333;
+    border-right: 2px solid #222;
+    overflow: hidden;
 }
+
 
 .side-panel {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    overflow-y: auto;
     background: #0f0f0f;
 }
 
+
 .panel {
-    background: #1a1a1a;
+    background: #161616;
+    border: 1px solid #222;
+    border-radius: 6px;
     padding: 0.75rem;
-    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
+
+.panel h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #aaa;
+}
+
+
+.agv-panel {
+    flex: 0 0 auto;
+}
+
+.job-panel {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+.event-panel {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    border-top: 1px solid #222;
+}
+
 </style>

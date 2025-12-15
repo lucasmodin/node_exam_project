@@ -47,7 +47,7 @@ export default function agvHandlers(io, socket) {
         );
 
         io.emit("events:new", {
-            agvId,
+            agv_id: agvId,
             message: `AGV-${agvId} sent to ${station}`
         });
     });
