@@ -39,7 +39,7 @@ router.post("/login", async(req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-    if (req.session.user) {
+    if (!req.session.user) {
         return res.status(401).send({
             error: "No active session"
         });
