@@ -6,6 +6,7 @@
 
   import Login from './pages/Login.svelte';
   import Dashboard from './pages/Dashboard.svelte';
+  import Jobs from './pages/Jobs.svelte';
   
 
 
@@ -18,6 +19,7 @@
 
       {#if $session}
         <Link to="/dashboard">Dashboard</Link>
+        <Link to="/jobs">Jobs</Link>
         <button on:click={logout}>Logout</button>
       {:else}
         <Link to="/login">Login</Link>
@@ -30,6 +32,10 @@
 
     <Route path="/login">
       <Login />
+    </Route>
+
+    <Route path="/jobs">
+      <ProtectedRoutes component={Jobs} />
     </Route>
 
     <Route path="/dashboard">

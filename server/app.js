@@ -25,8 +25,8 @@ const sessionMiddleware = session({
 app.use(sessionMiddleware);
 
 const generalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 100,
+    windowMs: 15 * 60 * 10000,
+    limit: 1000,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
     ipv6Subnet: 56
@@ -35,8 +35,8 @@ const generalLimiter = rateLimit({
 app.use(generalLimiter);
 
 const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 15,
+    windowMs: 15 * 60 * 10000,
+    limit: 1000,
     standardHeaders: 'draft-8',
     legacyHeaders: false
 });

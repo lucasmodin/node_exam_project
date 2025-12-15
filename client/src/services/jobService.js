@@ -19,7 +19,10 @@ export async function updateJob(updatedJob) {
             return [...current, updatedJob];
         }
 
-        current[index] = updatedJob;
-        return [...current];
+        return current.map(job =>
+            job.id === updatedJob.id
+                ? {...job, ...updatedJob}
+                : job
+        ); 
     });
 }

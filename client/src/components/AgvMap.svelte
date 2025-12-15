@@ -43,7 +43,6 @@
     display: block;
 }
 
-/
 .agv-dot {
     position: absolute;
     width: 16px;

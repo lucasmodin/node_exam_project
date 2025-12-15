@@ -1,8 +1,16 @@
 import db from '../database/connection.js';
 import { authorizeRoles } from '../middleware/accessControlSocket.js';
 import { Roles } from '../data/roles.js';
+import { moveAgv } from './util/agvService.js';
+
+const STAGE_TO_STATION = {
+    incoming: "INCOMING",
+    wash: "WASH_TABLE_1",
+    sterile: "CABINET_WASHER_1"
+}
 
 const STAGES = ["incoming", "wash", "sterile", "ready", "delivered"];
+
 
 export default function jobHandlers(io, socket) {
 
@@ -17,7 +25,7 @@ export default function jobHandlers(io, socket) {
         Roles.SUPERVISOR
     );
 
-    socket.on("job:create", async ({ name }) => {
+    socket.on("job:create", async ({ name, agvId }) => {
 
         if (!canCreateJob(socket, "create job")) {
             return;
@@ -31,19 +39,21 @@ export default function jobHandlers(io, socket) {
         }
 
         const result = await db.run(
-            `INSERT INTO jobs (name, stage) VALUES (?, 'incoming')`, [name]
+            `INSERT INTO jobs (name, stage, assigned_agv) VALUES (?, 'incoming', ?)`, [name, agvId]
         );
 
         const job = {
             id: result.lastID,
             name,
-            stage: "incoming"
+            stage: "incoming",
+            assigned_agv: agvId
         };
 
         io.emit("jobs:update", job);
     });
 
     socket.on("job:advance", async ({ jobId }) => {
+        console.log("job:advance RECEIVED", jobId);
         if (!canAdvanceJob(socket, "advance job")) {
             return;
         }
@@ -60,6 +70,7 @@ export default function jobHandlers(io, socket) {
         }
 
         const currentIndex = STAGES.indexOf(job.stage);
+
         if (currentIndex === -1 || currentIndex === STAGES.length - 1) {
             return socket.emit("system:message", {
                 type: "error", 
@@ -76,5 +87,20 @@ export default function jobHandlers(io, socket) {
         const updatedJob = { ...job, stage: nextStage};
 
         io.emit("jobs:update", updatedJob);
+
+        const station = STAGE_TO_STATION[nextStage];
+
+        console.log("ADVANCE JOB", {
+            jobId,
+            stage: job.stage,
+            nextStage,
+            assigned_agv: job.assigned_agv,
+            station
+        });
+
+
+        if (station && job.assigned_agv) {
+            await moveAgv(io, job.assigned_agv, station);
+        }
     }); 
 }
