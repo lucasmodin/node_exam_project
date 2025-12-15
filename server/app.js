@@ -2,12 +2,18 @@ import express from 'express';
 import session from 'express-session';
 import { rateLimit } from 'express-rate-limit';
 import helmet from 'helmet';
+import cors from 'cors';
 import 'dotenv/config';
 
 // ------------ setup, session and rate limiting ------------
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 
 const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET,
