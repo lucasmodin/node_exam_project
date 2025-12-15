@@ -5,7 +5,8 @@ import { updateJob } from '../services/jobService.js';
 import { addEvent } from '../services/eventService.js';
 
 const socket = io(import.meta.env.VITE_BASE_URL, {
-    withCredentials: true
+    withCredentials: true,
+    autoConnect: false
 });
 
 socket.on("connect", () => {

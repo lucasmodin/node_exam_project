@@ -3,6 +3,8 @@
     import { session } from '../stores/sessionStore.js';
     import { navigate } from 'svelte-routing';
 
+    import socket from '../util/socket.js';
+
     let username = "";
     let password = "";
     let error = "";
@@ -24,6 +26,7 @@
         }
 
         session.set(result.user);
+        socket.connect();
         loading = false;
 
         navigate("/dashboard");
