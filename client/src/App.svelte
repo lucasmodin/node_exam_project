@@ -7,9 +7,7 @@
   import Login from './pages/Login.svelte';
   import Dashboard from './pages/Dashboard.svelte';
   import Jobs from './pages/Jobs.svelte';
-  
-
-
+  import AdminAgvs from './pages/AdminAgvs.svelte';
 </script>
 
 <div class="page-wrapper">
@@ -20,6 +18,10 @@
       {#if $session}
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/jobs">Jobs</Link>
+
+        {#if $session.role === "admin"}
+          <Link to="/admin/agvs">AGV Admin</Link>
+        {/if}
         <button on:click={logout}>Logout</button>
       {:else}
         <Link to="/login">Login</Link>
@@ -41,6 +43,11 @@
     <Route path="/dashboard">
       <ProtectedRoutes component={Dashboard} />
     </Route>
+
+    <Route path="/admin/agvs">
+      <ProtectedRoutes component={AdminAgvs} roles={["admin"]} />
+    </Route>
+
   </Router>
 
 </div>
