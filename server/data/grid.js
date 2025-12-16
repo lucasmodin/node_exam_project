@@ -6,6 +6,13 @@ export const stations = {
         y: 203
     },
 
+    AGV_STATION: {
+        id: "AGV_STATION",
+        label: "AGV Station",
+        x: 160,
+        y: 70
+    },
+
     CABINET_WASHER_1: {
         id: "CABINET_WASHER_1",
         label: "Cabinet Washer 1",

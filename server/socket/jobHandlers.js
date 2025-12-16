@@ -6,7 +6,8 @@ import { moveAgv } from './util/agvService.js';
 const STAGE_TO_STATION = {
     incoming: "INCOMING",
     wash: "WASH_TABLE_1",
-    sterile: "CABINET_WASHER_1"
+    sterile: "CABINET_WASHER_1",
+    ready: "AGV_STATION"
 }
 
 const STAGES = ["created", "incoming", "wash", "sterile", "ready", "delivered"];
