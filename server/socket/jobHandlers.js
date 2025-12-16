@@ -102,6 +102,20 @@ export default function jobHandlers(io, socket) {
 
         if (station && job.assigned_agv) {
             await moveAgv(io, job.assigned_agv, station);
+
+            if (nextStage === "ready" || nextStage === "delivered") {
+                await db.run(
+                    `UPDATE agvs SET status = 'idle' WHERE id = ?`, [job.assigned_agv]
+                );
+
+                const agv = await db.get(
+                    `SELECT * FROM agvs WHERE id = ?`, [job.assigned_agv]
+                );
+
+                io.emit("agv:update", agv);
+            }
+
+            
         }
     }); 
 }
