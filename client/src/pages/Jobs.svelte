@@ -30,24 +30,3 @@
     </section>
 </div>
 
-<style>
-.jobs-page {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    height: calc(100vh - 60px);
-    gap: 1rem;
-    padding: 1rem;
-}
-
-.left {
-    background: #0f0f0f;
-    padding: 1rem;
-    border: 1px solid #222;
-}
-
-.right {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-</style>

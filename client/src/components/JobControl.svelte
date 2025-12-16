@@ -1,12 +1,16 @@
 <script>
     import { jobs } from '../stores/jobStore.js';
     import { agvs } from '../stores/agvStore.js';
+    import { session } from '../stores/sessionStore.js';
     import socket from '../util/socket.js';
+    import { deleteJob } from '../services/jobService.js';
 
-    $: activeJobs = $jobs.filter(job => job.stage !== "delivered")
+    $: activeJobs = $jobs.filter(job => job.stage !== "delivered" && job.stage !== "ready");
 
     let jobName = "";
     let selectedAgv = "";
+
+    const isAdmin = $session?.role === "admin";
 </script>
 
 <div class="job-control">
@@ -53,31 +57,20 @@
 
             <button
                 on:click={() => {
-                    console.log("EMITTING job:advance", job.id);
                     socket.emit("job:advance", { jobId: job.id })
                     }}
             >
                 Advance
             </button>
+
+            {#if isAdmin && activeJobs}
+                <button
+                    class="delete-btn"
+                    on:click={() => deleteJob(job.id)}
+                >
+                    Delete
+                </button>
+            {/if}
         </div>
     {/each}
 </div>
-
-<style>
-.job-control {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.job-row {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 6px;
-    background: #121212;
-    border: 1px solid #222;
-}
-
-</style>

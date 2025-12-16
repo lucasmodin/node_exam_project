@@ -77,6 +77,7 @@
             </span>
 
             <button
+                class="delete-btn"
                 disabled={deletingId === agv.id}
                 on:click={() => handleDelete(agv)}
             >

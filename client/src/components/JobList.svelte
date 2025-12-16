@@ -4,6 +4,7 @@
   import socket from '../util/socket.js'
 
   export let showAdvance = false;
+  
   function canAdvance(role) {
     return role === "admin" || role === "supervisor";
   }
