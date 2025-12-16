@@ -45,8 +45,8 @@
 
 .agv-dot {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     font-size: 0.65rem;
