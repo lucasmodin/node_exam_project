@@ -7,13 +7,16 @@
 
     import { loadJobs } from "../services/jobService.js";
     import { loadAgvs } from "../services/agvService.js";
+    import { loadEvents } from "../services/eventService.js";
 
     import "../util/socket.js";
 
     onMount(() => {
         loadJobs();
         loadAgvs();
+        loadEvents();
     });
+    
 </script>
 
 <div class="jobs-page">

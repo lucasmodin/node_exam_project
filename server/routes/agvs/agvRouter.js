@@ -74,10 +74,24 @@ router.patch("/:id/status", isSupervisor, async (req, res) => {
 })
 
 router.delete("/:id", isAdmin, async (req, res) => {
+
+    //traceability for jobs - for the domain, jobs need to stay
+    await db.run(
+        `UPDATE jobs SET assigned_agv = NULL WHERE assigned_agv = ?`, [req.params.id]
+    );
+
     await db.run(
         `DELETE FROM agvs WHERE id = ?`, [req.params.id]
     );
+    
+    await db.run(
+        `INSERT INTO events (agv_id, message)
+        VALUES (?, ?)`,
+        [req.params.id, `AGV-${req.params.id} removed; jobs unassigned`]
+    );
+
     res.send({ data: "AGV has been delete"});
+
 });
 
 export default router;

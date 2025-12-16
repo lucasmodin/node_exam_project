@@ -3,7 +3,6 @@
     import { navigate } from "svelte-routing";
     import { fetchGet } from "../util/fetchUtil.js";
     import { session } from "../stores/sessionStore.js";
-    import { Roles } from "../util/roles.js";
 
     export let component; 
     export let roles = [];
@@ -18,10 +17,11 @@
         if(result?.data) {
             session.set(result.data);
 
-            if (Roles.length === 0 || roles.includes(result.data.role)) {
+            if (roles.length === 0 || roles.includes(result.data.role)) {
                 allowed = true;
             } else {
                 authError = "You do not have access to this page";
+                navigate("/")
             }
             
         } else {

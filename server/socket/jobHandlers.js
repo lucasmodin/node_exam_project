@@ -9,7 +9,7 @@ const STAGE_TO_STATION = {
     sterile: "CABINET_WASHER_1"
 }
 
-const STAGES = ["incoming", "wash", "sterile", "ready", "delivered"];
+const STAGES = ["created", "incoming", "wash", "sterile", "ready", "delivered"];
 
 
 export default function jobHandlers(io, socket) {
@@ -39,13 +39,13 @@ export default function jobHandlers(io, socket) {
         }
 
         const result = await db.run(
-            `INSERT INTO jobs (name, stage, assigned_agv) VALUES (?, 'incoming', ?)`, [name, agvId]
+            `INSERT INTO jobs (name, stage, assigned_agv) VALUES (?, 'created', ?)`, [name, agvId]
         );
 
         const job = {
             id: result.lastID,
             name,
-            stage: "incoming",
+            stage: "created",
             assigned_agv: agvId
         };
 

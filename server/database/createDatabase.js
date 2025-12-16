@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS agvs (
 CREATE TABLE IF NOT EXISTS jobs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    stage TEXT CHECK(stage in('incoming', 'wash', 'sterile', 'ready', 'delivered')) NOT NULL DEFAULT 'incoming',
+    stage TEXT CHECK(stage in('created','incoming', 'wash', 'sterile', 'ready', 'delivered')) NOT NULL DEFAULT 'incoming',
     assigned_agv INTEGER,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (assigned_agv) REFERENCES agvs(id)
@@ -58,8 +58,8 @@ if (deleteMode) {
     db.exec(`
         INSERT INTO users (username, password_hash, role) VALUES
         ('admin', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'admin'),
-        ('supervisor', '$2a$12$QccTkMM5UbRUH/zMFu2DW.DuFnnM/dcuqNzlNf8g23s.FsbDShma6', 'supervisor'),
-        ('operator1', '$2a$12$H62/h70VfXPrJbfODZxmM.ulrJ3ZBvNigUVUWGpquX9T6k2NAEIae', 'operator');
+        ('supervisor', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'supervisor'),
+        ('operator1', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'operator');
     `);
     //agv
     db.exec(`

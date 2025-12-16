@@ -34,7 +34,7 @@
 
         <section class="panel job-panel">
             <h3>Jobs</h3>
-            <JobList />
+            <JobList showAdvance={true} />
         </section>
 
         <section class="panel event-panel">

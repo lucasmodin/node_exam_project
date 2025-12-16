@@ -1,5 +1,13 @@
 <script>
   import { jobs } from "../stores/jobStore.js";
+  import { session } from "../stores/sessionStore.js";
+  import socket from '../util/socket.js'
+
+  export let showAdvance = false;
+  function canAdvance(role) {
+    return role === "admin" || role === "supervisor";
+  }
+
 </script>
 
 <div class="job-table">
@@ -13,6 +21,15 @@
         <span class="job-agv">AGV {job.assigned_agv}</span>
       {:else}
         <span class="job-agv muted">-</span>
+      {/if}
+
+      {#if showAdvance && canAdvance($session?.role) && job.stage !== "delivered"}
+        <button
+            class="advance-btn"
+            on:click={() => socket.emit("job:advance", { jobId: job.id })}
+        >
+            Advance
+        </button>
       {/if}
     </div>
   {/each}
@@ -28,7 +45,7 @@
 
 .job-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   align-items: center;
   padding: 8px 10px;
   background: #121212;
@@ -63,4 +80,19 @@
 .job-agv.muted {
   opacity: 0.4;
 }
+
+.advance-btn {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 3px;
+  text-transform: uppercase;
+  background: #1f7a4a; 
+}
+
+.advance-btn:hover {
+  background: #252525;
+}
+
 </style>

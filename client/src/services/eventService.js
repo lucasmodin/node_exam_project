@@ -14,5 +14,5 @@ export async function loadEvents() {
 export function addEvent(event) {
     events.update(current => {
         return [event, ...current].slice(0,100);
-    });
+    })
 }

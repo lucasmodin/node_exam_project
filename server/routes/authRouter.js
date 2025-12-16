@@ -58,7 +58,7 @@ router.get("/me", isOperator, (req, res) => {
         data: {
             id: req.user.id,
             username: req.user.username,
-            role: req.session.role
+            role: req.user.role
         }
     });
 });

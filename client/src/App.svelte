@@ -37,11 +37,11 @@
     </Route>
 
     <Route path="/jobs">
-      <ProtectedRoutes component={Jobs} />
+      <ProtectedRoutes component={Jobs} roles={["operator", "supervisor", "admin"]}/>
     </Route>
 
     <Route path="/dashboard">
-      <ProtectedRoutes component={Dashboard} />
+      <ProtectedRoutes component={Dashboard} roles={["operator", "supervisor", "admin"]} />
     </Route>
 
     <Route path="/admin/agvs">
