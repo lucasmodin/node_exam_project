@@ -91,15 +91,6 @@ export default function jobHandlers(io, socket) {
 
         const station = STAGE_TO_STATION[nextStage];
 
-        console.log("ADVANCE JOB", {
-            jobId,
-            stage: job.stage,
-            nextStage,
-            assigned_agv: job.assigned_agv,
-            station
-        });
-
-
         if (station && job.assigned_agv) {
             await moveAgv(io, job.assigned_agv, station);
 

@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { isOperator, isSupervisor, isAdmin } from '../../middleware/accessControl.js';
 import db from '../../database/connection.js';
-//import { stations } from '../../data/grid.js';
 
 const router = Router();
 
