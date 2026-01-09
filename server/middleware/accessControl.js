@@ -26,7 +26,7 @@ export function isSupervisor(req, res, next) {
         });
     }
 
-    if (user.role === Roles.SUPERVISOR || Roles.ADMIN) {
+    if (user.role === Roles.SUPERVISOR || user.role === Roles.ADMIN) {
         req.user = user;
         return next();
     }

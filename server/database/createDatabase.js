@@ -57,9 +57,9 @@ if (deleteMode) {
     //users
     db.exec(`
         INSERT INTO users (username, password_hash, role) VALUES
-        ('admin', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'admin'),
-        ('supervisor', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'supervisor'),
-        ('operator1', '$2b$12$k0lekVcr68DtG6QX9cN2QugR7yzq6ksC1x44KfYJcAvBSGIW49UrS', 'operator');
+        ('admin', '$2a$12$HZu0EhHmkyS0ddL99QfL.uQKndMyzKm5eOH4iParVaq35vtM1Sp6a', 'admin'),
+        ('supervisor', '$2a$12$HZu0EhHmkyS0ddL99QfL.uQKndMyzKm5eOH4iParVaq35vtM1Sp6a', 'supervisor'),
+        ('operator1', '$2a$12$HZu0EhHmkyS0ddL99QfL.uQKndMyzKm5eOH4iParVaq35vtM1Sp6a', 'operator');
     `);
     //agv
     db.exec(`

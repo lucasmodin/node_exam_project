@@ -36,6 +36,8 @@
         if (!agv || deletingId !== null ) {
             return;
         }
+        deletingId = agv.id;
+        clearError();
 
         const result = await deleteAgv(agv.id);
 
