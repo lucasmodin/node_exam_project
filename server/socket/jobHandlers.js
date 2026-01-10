@@ -104,9 +104,7 @@ export default function jobHandlers(io, socket) {
                 );
 
                 io.emit("agv:update", agv);
-            }
-
-            
+            } 
         }
     }); 
 }

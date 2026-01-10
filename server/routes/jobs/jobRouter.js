@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", isOperator, async (req, res) => {
     const jobs = await db.all(
-        `SELECT * FROM jobs`
+        `SELECT * FROM jobs ORDER BY created_at DESC`
     );
 
     res.send({ data: jobs});
