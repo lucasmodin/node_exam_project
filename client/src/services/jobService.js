@@ -15,7 +15,7 @@ export async function updateJob(updatedJob) {
     jobs.update(current => {
         const index = current.findIndex(job => job.id === updatedJob.id);
 
-        if (index === -1) {
+        if (index === -1) { 
             return [...current, updatedJob];
         }
 

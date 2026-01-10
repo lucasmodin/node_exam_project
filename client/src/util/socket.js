@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 import { updateAgv } from '../services/agvService.js';
 import { updateJob } from '../services/jobService.js';
 import { addEvent } from '../services/eventService.js';
+import { removeAgv } from '../services/agvService.js';
+
 
 const socket = io(import.meta.env.VITE_BASE_URL, {
     withCredentials: true,
@@ -16,6 +18,10 @@ socket.on("connect", () => {
 socket.on("agv:update", updateAgv);
 socket.on("jobs:update", updateJob);
 socket.on("events:new", addEvent);
+socket.on("agv:delete", (payload) => {
+  console.log("recieved agv: delete", payload);
+  removeAgv(payload);
+});
 
 socket.on("system:message", (msg) => {
   console.log("SYSTEM MESSAGE", msg);

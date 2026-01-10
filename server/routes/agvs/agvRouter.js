@@ -34,18 +34,18 @@ router.post("/", isAdmin, async (req, res) => {
         });
     }
 
-    const insertedAgv = await db.run(
+    const result = await db.run(
         `INSERT INTO agvs (name, x, y, status) VALUES (?, ?, ?, 'idle');`,
         [name, x, y]
     );
 
-    const agvToReturn = {
-        id: insertedAgv.lastID,
-        name,
-        x, 
-        y,
-        status: "idle"
-    };
+    const agvToReturn = await db.get(
+        `SELECT * FROM agvs WHERE id = ?`,
+        [result.lastID]
+    );
+    
+    const io = req.app.get("io");
+    io.emit("agv:update", agvToReturn);
 
     res.status(201).send({ data: agvToReturn });
 });
@@ -82,12 +82,23 @@ router.delete("/:id", isAdmin, async (req, res) => {
     await db.run(
         `DELETE FROM agvs WHERE id = ?`, [req.params.id]
     );
+
+    const message = `AGV-${req.params.id} removed; jobs unassigned`;
     
-    await db.run(
+    const result = await db.run(
         `INSERT INTO events (agv_id, message)
         VALUES (?, ?)`,
-        [req.params.id, `AGV-${req.params.id} removed; jobs unassigned`]
+        [req.params.id, message]
     );
+
+    const event = await db.get(
+        `SELECT * FROM events WHERE id = ?`,
+        [result.lastID]
+    );
+
+    const io = req.app.get("io");
+    io.emit("agv:delete", { id: req.params.id });
+    io.emit("events:new", event);
 
     res.send({ data: "AGV has been delete"});
 

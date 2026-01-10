@@ -22,20 +22,16 @@ export default function eventHandlers(io, socket) {
             });
         }
 
-        await db.run(
-            `
-            INSERT INTO events (job_id, agv_id, message)
-            VALUES (?, ?, ?)
-            `,
+        const result = await db.run(
+            `INSERT INTO events (job_id, agv_id, message)
+            VALUES (?, ?, ?)`,
             [jobId, agvId, message]
         );
 
-        const event = {
-            job_id: jobId,
-            agv_id: agvId,
-            message,
-            created_at: new Date().toISOString()
-        };
+        const event = await db.get(
+            `SELECT * events WHERE id = ?`,
+            [result.lastID]
+        );
 
         io.emit("events:new", event);
     });

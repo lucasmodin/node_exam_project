@@ -24,6 +24,7 @@ Sockets:
 
     from server to client:
     agv:update
+    agv:delete (from http DELETE)
     jobs:update
     events:new
     system:message
