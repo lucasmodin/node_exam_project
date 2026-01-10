@@ -19,27 +19,31 @@
         loadJobs();
         loadEvents();
     })
+
+    import { agvs } from '../stores/agvStore.js';
+    import { events } from "../stores/eventStore.js";
+    import { jobs } from '../stores/jobStore.js'
 </script>
 
 <div class="dashboard">
     <div class="map-area">
-        <AgvMap />
+        <AgvMap agvs={$agvs}/>
     </div>
 
     <aside class="side-panel">
         <section class="panel agv-panel">
             <h3>AGVs</h3>
-            <AgvList />
+            <AgvList agvs={$agvs}/>
         </section>
 
         <section class="panel job-panel">
             <h3>Jobs</h3>
-            <JobList showAdvance={true} />
+            <JobList showAdvance={true} jobs={$jobs} />
         </section>
 
         <section class="panel event-panel">
             <h3>Events</h3>
-            <EventFeed />
+            <EventFeed events={$events}/>
         </section>
     </aside>
 </div>

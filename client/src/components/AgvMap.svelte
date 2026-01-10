@@ -1,5 +1,5 @@
 <script>
-    import { agvs } from "../stores/agvStore.js";
+    export let agvs = [];
 
     const MAP_WIDTH = 1000;
     const MAP_HEIGHT = 600;
@@ -8,7 +8,7 @@
 <div class="map-wrapper">
     <div class="map-container">
         <img src="/assets/map.png" alt="AGV Map" class="map-image">
-            {#each $agvs as agv}
+            {#each agvs as agv}
                 <div
                     class="agv-dot {agv.status}"
                     title={agv.name}

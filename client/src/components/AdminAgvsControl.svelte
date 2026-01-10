@@ -1,11 +1,7 @@
 <script>
-    import { onMount } from 'svelte';
-    import { agvs } from '../stores/agvStore.js';
-    import { loadAgvs, createAgv, deleteAgv } from '../services/agvService.js';
+    import { createAgv, deleteAgv } from '../services/agvService.js';
 
-    onMount(() => {
-        loadAgvs();
-    });
+    export let agvs = [];
 
     let agvName = "";
     let creating = false;
@@ -70,7 +66,7 @@
 
     <hr />
 
-    {#each $agvs as agv} 
+    {#each agvs as agv} 
         <div class="job-row">
             <span>{agv.name}</span>
 

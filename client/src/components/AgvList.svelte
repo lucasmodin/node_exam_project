@@ -1,9 +1,9 @@
 <script>
-  import { agvs } from "../stores/agvStore.js";
+  export let agvs = [];
 </script>
 
 <div class="agv-table">
-  {#each $agvs as agv}
+  {#each agvs as agv}
     <div class="agv-row">
       <span class="name">{agv.name}</span>
       <span class="status {agv.status}">{agv.status}</span>

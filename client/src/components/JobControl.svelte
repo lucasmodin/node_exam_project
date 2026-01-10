@@ -1,16 +1,18 @@
 <script>
-    import { jobs } from '../stores/jobStore.js';
-    import { agvs } from '../stores/agvStore.js';
+    export let jobs = [];
+    export let agvs = [];
     import { session } from '../stores/sessionStore.js';
     import socket from '../util/socket.js';
     import { deleteJob } from '../services/jobService.js';
 
-    $: activeJobs = $jobs.filter(job => job.stage !== "delivered" && job.stage !== "ready");
+    $: activeJobs = jobs.filter(
+        job => job.stage !== "delivered" && job.stage !== "ready"
+    );
 
     let jobName = "";
     let selectedAgv = "";
 
-    const isAdmin = $session?.role === "admin";
+    $: isAdmin = $session?.role === "admin";
 </script>
 
 <div class="job-control">
@@ -23,7 +25,7 @@
 
     <select bind:value={selectedAgv}>
         <option value="">Select AGV</option>
-        {#each $agvs as agv}
+        {#each agvs as agv}
             <option value={agv.id}>
                 {agv.name} {(agv.status)}
             </option>
@@ -63,7 +65,7 @@
                 Advance
             </button>
 
-            {#if isAdmin && activeJobs}
+            {#if isAdmin}
                 <button
                     class="delete-btn"
                     on:click={() => deleteJob(job.id)}

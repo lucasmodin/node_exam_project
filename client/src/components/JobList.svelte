@@ -1,5 +1,6 @@
 <script>
-  import { jobs } from "../stores/jobStore.js";
+  export let jobs = [];
+
   import { session } from "../stores/sessionStore.js";
   import socket from '../util/socket.js'
 
@@ -12,7 +13,7 @@
 </script>
 
 <div class="job-table">
-  {#each $jobs as job}
+  {#each jobs as job}
     <div class="job-row">
       <span class="job-name">{job.name}</span>
 

@@ -1,12 +1,12 @@
 <script>
-    import { events } from "../stores/eventStore.js";
+    export let events = [];
 </script>
 
 <div class="event-log">
-    {#if $events.length === 0}
+    {#if events.length === 0}
         <div class="event-line muted">No events yet</div>
     {:else}
-        {#each $events as event}
+        {#each events as event}
             <div class="event-line">
                 <span class="message">{event.message}</span>
 
