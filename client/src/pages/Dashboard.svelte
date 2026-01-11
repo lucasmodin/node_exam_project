@@ -33,7 +33,7 @@
     <aside class="side-panel">
         <section class="panel agv-panel">
             <h3>AGVs</h3>
-            <AgvList agvs={$agvs}/>
+            <AgvList agvs={$agvs} showEditAgvStatus={true}/>
         </section>
 
         <section class="panel job-panel">

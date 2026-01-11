@@ -13,7 +13,8 @@ router.get("/", isOperator, async (req, res) => {
 
 router.get("/:id", isOperator, async (req, res) => {
     const agv = await db.get(
-        `SELECT * FROM agvs WHERE id = ?;`, [req.params.id]      
+        `SELECT * FROM agvs WHERE id = ?;`, 
+        [req.params.id]      
     );
 
     if (!agv) {
@@ -50,8 +51,8 @@ router.post("/", isAdmin, async (req, res) => {
     res.status(201).send({ data: agvToReturn });
 });
 
-router.patch("/:id/status", isSupervisor, async (req, res) => {
-    const { status } = req.body;
+router.patch("/:id", isSupervisor, async (req, res) => {
+    const { name, status } = req.body;
     const valid =["idle", "moving", "delivering", "error"];
 
     if (!valid.includes(status)) {
@@ -60,14 +61,22 @@ router.patch("/:id/status", isSupervisor, async (req, res) => {
         });
     }
 
+    if (name !== undefined && name.trim() === "") {
+        return res.status(400).send({ error: "Name cannot be empty"});
+    }
+
     await db.run(
-        `UPDATE agvs SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-        [status, req.params.id]
+        `UPDATE agvs SET name = ?, status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+        [name, status, req.params.id]
     );
 
     const updatedAgv = await db.get(
-        `SELECT * FROM agvs WHERE id = ?`, [req.params.id]
+        `SELECT * FROM agvs WHERE id = ?`, 
+        [req.params.id]
     );
+
+    const io = req.app.get("io");
+    io.emit("agv:update", updatedAgv);
 
     res.send({ data: updatedAgv });
 })
@@ -76,11 +85,13 @@ router.delete("/:id", isAdmin, async (req, res) => {
 
     //traceability for jobs - for the domain, jobs need to stay
     await db.run(
-        `UPDATE jobs SET assigned_agv = NULL WHERE assigned_agv = ?`, [req.params.id]
+        `UPDATE jobs SET assigned_agv = NULL WHERE assigned_agv = ?`, 
+        [req.params.id]
     );
 
     await db.run(
-        `DELETE FROM agvs WHERE id = ?`, [req.params.id]
+        `DELETE FROM agvs WHERE id = ?`, 
+        [req.params.id]
     );
 
     const message = `AGV-${req.params.id} removed; jobs unassigned`;

@@ -30,10 +30,14 @@ router.get("/:id", isOperator, async (req, res) => {
 router.delete("/:id", isAdmin, async (req, res) => {
     const jobId = Number(req.params.id);
 
-    await db.run(
+    const result = await db.run(
         `DELETE FROM jobs WHERE id = ?`,
         [jobId]
     );
+
+    if (result.changes === 0) {
+        return res.status(404).send({ error: "Job not found" });
+    }
 
     const io = req.app.get("io");
 

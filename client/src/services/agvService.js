@@ -1,5 +1,5 @@
 import { agvs } from "../stores/agvStore.js";
-import { fetchGet, fetchPost, fetchDelete } from "../util/fetchUtil.js";
+import { fetchGet, fetchPost, fetchDelete, fetchPatch } from "../util/fetchUtil.js";
 import { updateJob } from "./jobService.js";
 
 export async function loadAgvs() {
@@ -41,6 +41,12 @@ export async function createAgv(name) {
 
 export async function deleteAgv(agvId) {
     const result = await fetchDelete(`/agvs/${agvId}`);
+
+    return result;
+}
+
+export async function setAgvStatusAndName(agvId, {name, status}) {
+    const result = await fetchPatch(`/agvs/${agvId}`, { name, status })
 
     return result;
 }
