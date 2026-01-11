@@ -22,7 +22,16 @@
         {#if $session.role === "admin"}
           <Link to="/admin/agvs">AGV Admin</Link>
         {/if}
-        <button on:click={logout}>Logout</button>
+
+        <div class="nav-right">
+          <div class="session-info">
+            Logged in as <strong>{$session.username}</strong>
+            <span class="role">({$session.role})</span>
+          </div>
+
+          <button on:click={logout}>Logout</button>
+        </div>
+        
       {:else}
         <Link to="/login">Login</Link>
       {/if}

@@ -35,20 +35,21 @@
 </script>
 
     <div class="login-wrapper">
-        <h1>MES-AGV Login</h1>
-        
         <div class="login-form-wrapper">
-            <form on:submit|preventDefault={handleLogin}>
-                <label>Username</label>
-                <input bind:value={username} required disabled={loading}>
-
-                <label>Password</label>
-                <input type="password" bind:value={password} required disabled={loading}>
-
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-            </form>
+            <h1 class="header">MES-AGV Login</h1>
+                <form class="form" on:submit|preventDefault={handleLogin}>
+                    <div class="field">
+                        <label for="username">Username</label>
+                        <input id="username" bind:value={username} required disabled={loading}>
+                    </div>
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" bind:value={password} required disabled={loading}>
+                    </div>
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Logging in..." : "Login"}
+                    </button>
+                </form>
         </div>
 
         {#if loading}
@@ -59,3 +60,46 @@
             <div class="error-message">{error}</div>
         {/if}
     </div>
+
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+        }
+
+        .login-form-wrapper {
+            width: min(420px, 100%);
+            background: #161616;
+            border: 1px solid #222;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        label {
+            font-size: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+    </style>

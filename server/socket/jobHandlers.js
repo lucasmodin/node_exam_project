@@ -40,15 +40,14 @@ export default function jobHandlers(io, socket) {
         }
 
         const result = await db.run(
-            `INSERT INTO jobs (name, stage, assigned_agv) VALUES (?, 'created', ?)`, [name, agvId]
+            `INSERT INTO jobs (name, stage, assigned_agv) VALUES (?, 'created', ?)`,
+            [name, agvId]
         );
 
-        const job = {
-            id: result.lastID,
-            name,
-            stage: "created",
-            assigned_agv: agvId
-        };
+        const job = await db.run(
+            `SELECT * FROM jobs WHERE id = ?`,
+            [result.lastID]
+        );
 
         io.emit("jobs:update", job);
     });
@@ -60,7 +59,8 @@ export default function jobHandlers(io, socket) {
         }
 
         const job = await db.get(
-            `SELECT * FROM jobs WHERE id = ?`, [jobId]
+            `SELECT * FROM jobs WHERE id = ?`,
+            [jobId]
         );
 
         if (!job) {
@@ -82,7 +82,8 @@ export default function jobHandlers(io, socket) {
         const nextStage = STAGES[currentIndex + 1];
 
         await db.run(
-            `UPDATE jobs SET stage = ? WHERE id = ?`, [nextStage, jobId]
+            `UPDATE jobs SET stage = ? WHERE id = ?`,
+            [nextStage, jobId]
         );
 
         const updatedJob = { ...job, stage: nextStage};
@@ -96,11 +97,13 @@ export default function jobHandlers(io, socket) {
 
             if (nextStage === "ready" || nextStage === "delivered") {
                 await db.run(
-                    `UPDATE agvs SET status = 'idle' WHERE id = ?`, [job.assigned_agv]
+                    `UPDATE agvs SET status = 'idle' WHERE id = ?`, 
+                    [job.assigned_agv]
                 );
 
                 const agv = await db.get(
-                    `SELECT * FROM agvs WHERE id = ?`, [job.assigned_agv]
+                    `SELECT * FROM agvs WHERE id = ?`,
+                    [job.assigned_agv]
                 );
 
                 io.emit("agv:update", agv);
