@@ -44,7 +44,7 @@ export default function jobHandlers(io, socket) {
             [name, agvId]
         );
 
-        const job = await db.run(
+        const job = await db.get(
             `SELECT * FROM jobs WHERE id = ?`,
             [result.lastID]
         );
