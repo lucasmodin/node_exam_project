@@ -22,14 +22,16 @@ export async function moveAgv(io, agvId, station) {
 
     io.emit("agv:update", agv);
 
+    const message = `AGV-${agvId} sent to ${station}`
+
     await db.run(
         `INSERT INTO events (agv_id, message)
          VALUES (?, ?)`,
-        [agvId, `AGV-${agvId} sent to ${station}`]
+        [agvId, message]
     );
 
     io.emit("events:new", {
         agv_id: agvId,
-        message: `AGV-${agvId} sent to ${station}`
+        message: message
     });
 }

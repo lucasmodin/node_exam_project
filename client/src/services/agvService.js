@@ -1,5 +1,6 @@
 import { agvs } from "../stores/agvStore.js";
 import { fetchGet, fetchPost, fetchDelete } from "../util/fetchUtil.js";
+import { updateJob } from "./jobService.js";
 
 export async function loadAgvs() {
     const result = await fetchGet("/agvs");
@@ -16,11 +17,12 @@ export function updateAgv(updatedAgv) { //update ui store
         const index = current.findIndex(agv => agv.id === updatedAgv.id);
 
         if (index === -1) {
-            return [...current, updatedAgv];
+            return [updatedAgv, ...current];
         }
 
-        current[index] = updatedAgv;
-        return [...current];
+        return current.map(agv => 
+            agv.id === updatedAgv.id ? updatedAgv : agv
+        );
     });
 }
 

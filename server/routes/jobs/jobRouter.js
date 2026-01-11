@@ -14,7 +14,8 @@ router.get("/", isOperator, async (req, res) => {
 
 router.get("/:id", isOperator, async (req, res) => {
     const job = await db.get(
-        `SELECT * FROM jobs WHERE id = ?`, [req.params.id]
+        `SELECT * FROM jobs WHERE id = ?`, 
+        [req.params.id]
     );
 
     if (!job) {
@@ -27,9 +28,16 @@ router.get("/:id", isOperator, async (req, res) => {
 });
 
 router.delete("/:id", isAdmin, async (req, res) => {
+    const jobId = Number(req.params.id);
+
     await db.run(
-        `DELETE FROM jobs WHERE id = ?`, [req.params.id]
+        `DELETE FROM jobs WHERE id = ?`,
+        [jobId]
     );
+
+    const io = req.app.get("io");
+
+    io.emit("job:delete", { id: jobId})
 
     res.send({ data: "Job deleted" });
 });

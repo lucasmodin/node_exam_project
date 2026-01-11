@@ -8,12 +8,17 @@
 <div class="map-wrapper">
     <div class="map-container">
         <img src="/assets/map.png" alt="AGV Map" class="map-image">
-            {#each agvs as agv}
+            {#each agvs as agv} 
+            <!--
+            position is calculated relative to map size
+            so if agv.x = 1, it translates to pixel nr.1 (from left) 
+            same goes for agv.y (from top)
+            -->
                 <div
                     class="agv-dot {agv.status}"
                     title={agv.name}
                     style="
-                        left: {(agv.x / MAP_WIDTH) * 100}%;
+                        left: {(agv.x / MAP_WIDTH) * 100}%;   
                         top: {(agv.y / MAP_HEIGHT) * 100}%;
                     ">
                     {agv.id}

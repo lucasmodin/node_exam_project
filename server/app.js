@@ -18,8 +18,11 @@ app.use(cors({
 const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        httpOnly: true, 
+    }
 });
 
 app.use(sessionMiddleware);

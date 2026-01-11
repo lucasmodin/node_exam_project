@@ -1,6 +1,8 @@
 <script>
     export let jobs = [];
     export let agvs = [];
+
+    import ConfirmModal from './ConfirmModal.svelte';
     import { session } from '../stores/sessionStore.js';
     import socket from '../util/socket.js';
     import { deleteJob } from '../services/jobService.js';
@@ -9,10 +11,60 @@
         job => job.stage !== "delivered" && job.stage !== "ready"
     );
 
+    $: isAdmin = $session?.role === "admin";
+
     let jobName = "";
     let selectedAgv = "";
 
-    $: isAdmin = $session?.role === "admin";
+    //modal
+    let confirmOpen = false;
+    let jobToDelete = null;
+    let deleting = false;
+    let errorMsg = "";
+
+    function clearError() {
+        errorMsg = "";
+    }
+
+    function openDeleteModal(job) {
+        if (!job || deleting) {
+            return;
+        }
+
+        jobToDelete = job;
+        confirmOpen = true;
+        clearError();
+    }
+
+    function closeDeleteModal() {
+        if (deleting) {
+            return;
+        }
+
+        confirmOpen = false;
+        jobToDelete = null;
+    }
+
+    async function confirmDelete() {
+        if (!jobToDelete || deleting) {
+            return;
+        }
+
+        deleting = true;
+        clearError();
+
+        const result = await deleteJob(jobToDelete.id);
+
+        if (result?.error) {
+            errorMsg = result.error;
+            deleting = false;
+            return;
+        }
+
+        deleting = false;
+        closeDeleteModal();
+    }
+    
 </script>
 
 <div class="job-control">
@@ -37,16 +89,18 @@
         on:click={() => {
             socket.emit("job:create", {
                 name: jobName,
-                agvId: selectedAgv
+                agvId: Number(selectedAgv)
             });
-            console.log("EMITTING job:create", jobName, selectedAgv);
-
             jobName = "";
             selectedAgv = "";
         }}
     >
         Create job
     </button>
+
+    {#if errorMsg}
+        <div class="error-message">{errorMsg}</div>
+    {/if}
 
     <hr />
 
@@ -68,7 +122,8 @@
             {#if isAdmin}
                 <button
                     class="delete-btn"
-                    on:click={() => deleteJob(job.id)}
+                    disabled={deleting}
+                    on:click={() => openDeleteModal(job)}
                 >
                     Delete
                 </button>
@@ -76,3 +131,14 @@
         </div>
     {/each}
 </div>
+
+<ConfirmModal
+    open={confirmOpen}
+    title="Delete Job"
+    message={`Are you sure you want to delete ${jobToDelete?.name}?`}
+    confirmText="Yes, delete"
+    cancelText="Cancel"
+    loading={deleting}
+    onConfirm={confirmDelete}
+    onCancel={closeDeleteModal}
+/>

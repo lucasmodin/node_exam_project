@@ -1,12 +1,19 @@
 <script>
     import { createAgv, deleteAgv } from '../services/agvService.js';
+    import ConfirmModal from './ConfirmModal.svelte';
+
 
     export let agvs = [];
 
     let agvName = "";
     let creating = false;
     let errorMsg = "";
-    let deletingId = null;
+
+    let deleting = false;
+
+    //modal
+    let confirmOpen = false;
+    let agvToDelete = null;
 
     function clearError() {
         errorMsg = "";
@@ -28,20 +35,38 @@
         agvName = "";
     }
 
-    async function handleDelete(agv) {
-        if (!agv || deletingId !== null ) {
+    function openDeleteModal(agv) {
+        if (!agv || deleting) {
             return;
         }
-        deletingId = agv.id;
+
+        agvToDelete = agv;
+        confirmOpen = true;
+        clearError();
+    }
+
+    function closeDeleteModal() {
+        confirmOpen = false;
+        agvToDelete = null;
+    }
+
+    async function confirmDelete() {
+        if (!agvToDelete || deleting) {
+            return;
+        }
+        deleting = true;
         clearError();
 
-        const result = await deleteAgv(agv.id);
+        const result = await deleteAgv(agvToDelete.id);
 
-        deletingId = null;
+        deleting = false;
 
         if (result?.error) {
             errorMsg = result.error;
+            return;
         }
+
+        closeDeleteModal();
     }
 </script>
 
@@ -76,11 +101,21 @@
 
             <button
                 class="delete-btn"
-                disabled={deletingId === agv.id}
-                on:click={() => handleDelete(agv)}
+                disabled={deleting}
+                on:click={() => openDeleteModal(agv)}
             >
-                {deletingId === agv.id ? "Deleting..." : "Delete"}
+                {deleting ? "Deleting..." : "Delete"}
             </button>
         </div>
     {/each}
 </div>
+
+<ConfirmModal
+    open={confirmOpen}
+    title="Delete AGV"
+    message={`Are you sure you want to delete ${agvToDelete?.name}?`}
+    confirmText="Yes, delete"
+    loading={deleting}
+    onConfirm={confirmDelete}
+    onCancel={closeDeleteModal}
+/>

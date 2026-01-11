@@ -7,10 +7,10 @@ const STAGE_TO_STATION = {
     incoming: "INCOMING",
     wash: "WASH_TABLE_1",
     sterile: "CABINET_WASHER_1",
-    ready: "AGV_STATION"
+    delivered: "AGV_STATION"
 }
 
-const STAGES = ["created", "incoming", "wash", "sterile", "ready", "delivered"];
+const STAGES = ["created", "incoming", "wash", "sterile", "delivered"];
 
 
 export default function jobHandlers(io, socket) {
@@ -86,7 +86,10 @@ export default function jobHandlers(io, socket) {
             [nextStage, jobId]
         );
 
-        const updatedJob = { ...job, stage: nextStage};
+        const updatedJob = await db.get(
+            `SELECT * FROM jobs WHERE id = ?`,
+            [jobId]
+        );
 
         io.emit("jobs:update", updatedJob);
 
@@ -95,7 +98,7 @@ export default function jobHandlers(io, socket) {
         if (station && job.assigned_agv) {
             await moveAgv(io, job.assigned_agv, station);
 
-            if (nextStage === "ready" || nextStage === "delivered") {
+            if (nextStage === "delivered") {
                 await db.run(
                     `UPDATE agvs SET status = 'idle' WHERE id = ?`, 
                     [job.assigned_agv]
