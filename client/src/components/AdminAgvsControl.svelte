@@ -1,7 +1,7 @@
 <script>
-    import { createAgv, deleteAgv } from '../services/agvService.js';
+    import { createAgv, deleteAgv, setAgvStatusAndName } from '../services/agvService.js';
     import ConfirmModal from './ConfirmModal.svelte';
-
+    import EditAgvModal from './EditAgvModal.svelte';
 
     export let agvs = [];
 
@@ -11,9 +11,15 @@
 
     let deleting = false;
 
-    //modal
+    //modal (delete)
     let confirmOpen = false;
     let agvToDelete = null;
+
+    //modal (edit)
+    let editOpen = false;
+    let agvToEdit = null;
+    let editing = false;
+
 
     function clearError() {
         errorMsg = "";
@@ -68,6 +74,43 @@
 
         closeDeleteModal();
     }
+
+    function openEditModal(agv) {
+       agvToEdit = agv;
+       editOpen = true;
+       clearError(); 
+    }
+
+    function closeEditModal() {
+        if (editing) {
+            return;
+        }
+
+        editOpen = false;
+        agvToEdit = null;
+    }
+
+    async function confirmEdit(name, status) {
+        if (!agvToEdit) {
+            return;
+        }
+
+        editing = true;
+        clearError();
+
+        const result = await setAgvStatusAndName(agvToEdit.id, { name, status });
+
+        editing = false;
+
+        if (result?.error) {
+            errorMsg = result.error;
+            return;
+        }
+
+        closeEditModal();
+    }
+
+    
 </script>
 
 <div class="job-control">
@@ -99,13 +142,23 @@
                 {agv.status}
             </span>
 
-            <button
-                class="delete-btn"
-                disabled={deleting}
-                on:click={() => openDeleteModal(agv)}
-            >
-                {deleting ? "Deleting..." : "Delete"}
-            </button>
+            <div class="actions">
+                <button
+                    class="edit-btn"
+                    on:click={() => openEditModal(agv)}
+                    disabled={editing || deleting}
+                >
+                    Edit
+                </button>
+
+                <button
+                    class="delete-btn"
+                    disabled={deleting}
+                    on:click={() => openDeleteModal(agv)}
+                >
+                    {deleting ? "Deleting..." : "Delete"}
+                </button>
+            </div>
         </div>
     {/each}
 </div>
@@ -119,3 +172,21 @@
     onConfirm={confirmDelete}
     onCancel={closeDeleteModal}
 />
+
+<EditAgvModal
+    open={editOpen}
+    loading={editing}
+    errorMsg={errorMsg}
+    initialName={agvToEdit?.name ?? ""}
+    initialStatus={agvToEdit?.status ?? "idle"}
+    onSave={confirmEdit}
+    onCancel={closeEditModal}
+/>
+
+<style>
+    .actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+</style>
+
