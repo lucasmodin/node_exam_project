@@ -53,7 +53,6 @@ export default function jobHandlers(io, socket) {
     });
 
     socket.on("job:advance", async ({ jobId }) => {
-        console.log("job:advance RECEIVED", jobId);
         if (!canAdvanceJob(socket, "advance job")) {
             return;
         }

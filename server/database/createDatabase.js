@@ -70,16 +70,13 @@ if (deleteMode) {
     //jobs
     db.exec(`
         INSERT INTO jobs (name, stage, assigned_agv) VALUES
-        ('Batch #101 Ortopædi', 'incoming', NULL),
-        ('Batch #102 Urologi', 'wash', 1),
-        ('Batch #103 Endoskopi', 'ready', NULL);    
+        ('Batch #101 Ortopædi', 'incoming', 1),
+        ('Batch #102 Urologi', 'wash', 2); 
     `);
 
     //event log
     db.exec(`
         INSERT INTO events (job_id, agv_id, message) VALUES
-        (2, 1, 'AGV-1 hentede batch #102 til vask'),
-        (3, NULL, 'Batch #103 klar til transport'),
-        (1, NULL, 'Batch #101 modtaget i indgang');
+        (2, 1, 'AGV-1 hentede batch #102 til vask');
     `);
 }

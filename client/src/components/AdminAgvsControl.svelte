@@ -6,7 +6,7 @@
     export let agvs = [];
 
     let agvName = "";
-    let creating = false;
+    let creating = false;   
     let errorMsg = "";
 
     let deleting = false;
@@ -88,6 +88,7 @@
 
         editOpen = false;
         agvToEdit = null;
+        clearError();
     }
 
     async function confirmEdit(name, status) {

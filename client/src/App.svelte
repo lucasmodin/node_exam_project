@@ -38,7 +38,7 @@
     </nav>
 
     <Route path="/">
-      <h1>MES-AGV Sytem</h1>
+      <h1>MES-AGV System</h1>
     </Route>
 
     <Route path="/login">
