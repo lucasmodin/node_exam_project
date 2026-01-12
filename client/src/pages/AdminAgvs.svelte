@@ -4,7 +4,6 @@
     import { agvs } from '../stores/agvStore.js';
     import { loadAgvs } from '../services/agvService';
     import AdminAgvsControl from "../components/AdminAgvsControl.svelte";
-    import '../util/socket.js';
 
     onMount(() => {
         if (get(agvs).length === 0) {

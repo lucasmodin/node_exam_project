@@ -11,9 +11,6 @@
     import { loadJobs } from "../services/jobService.js";
     import { loadEvents } from "../services/eventService";
 
-    import "../util/socket";
-
-
     onMount(() => {
         loadAgvs();
         loadJobs();

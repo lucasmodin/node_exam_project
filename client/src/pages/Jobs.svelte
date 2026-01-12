@@ -14,8 +14,6 @@
     import { events } from "../stores/eventStore.js";
     import { agvs } from '../stores/agvStore.js';
 
-    import "../util/socket.js";
-
     onMount(() => {
         if (get(agvs).length === 0) loadAgvs();
         if (get(events).length === 0) loadEvents();
