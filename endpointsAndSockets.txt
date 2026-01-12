@@ -3,7 +3,7 @@ Endpoints:
     agvs:
     GET /agvs (isOperator)
     GET /agvs/id (isOperator)
-    PATCH /agvs/id/status (isOperator)
+    PATCH /agvs/id/ (isSupervisor)
     POST /agvs (isAdmin)
     DELETE /agvs (isAdmin)
 

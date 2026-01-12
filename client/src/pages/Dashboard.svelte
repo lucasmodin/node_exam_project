@@ -23,11 +23,29 @@
     import { agvs } from '../stores/agvStore.js';
     import { events } from "../stores/eventStore.js";
     import { jobs } from '../stores/jobStore.js'
+
 </script>
 
 <div class="dashboard">
     <div class="map-area">
-        <AgvMap agvs={$agvs}/>
+        <div class="map-wrapper">
+            <AgvMap agvs={$agvs}/>
+        </div>
+        <div class="attention-panel">
+            <h3>AGV's that require attention</h3>
+
+            {#if $agvs.filter(agv => agv.status === "error").length === 0}
+                <div class="empty">No AGV's in error. All is good</div>
+            {:else}
+                {#each $agvs.filter(agv => agv.status === "error") as agv}
+                    <div class="attention-row">
+                        <span class="name">{agv.name}</span>
+                        <span class="meta">id: {agv.id}</span>
+                        <span class="badge error">ERROR</span>
+                    </div>
+                {/each}
+            {/if}
+        </div>
     </div>
 
     <aside class="side-panel">
@@ -56,11 +74,39 @@
     background: #0b0b0b;
 }
 
+.attention-panel {
+  flex: 0 0 auto;
+  border-top: 1px solid #222;
+  background: #0f0f0f;
+  padding: 0.75rem;
+  max-height: 180px;     
+  overflow-y: auto;
+}
+
+.attention-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 1px solid #222;
+  background: #121212;
+  border-radius: 6px;
+  margin-top: 6px;
+}
 
 .map-area {
     background: #111;
     border-right: 2px solid #222;
     overflow: hidden;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.map-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;  
 }
 
 
@@ -107,4 +153,8 @@
     border-top: 1px solid #222;
 }
 
+.empty {
+  opacity: 0.7;
+  font-size: 0.85rem;
+}
 </style>

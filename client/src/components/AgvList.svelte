@@ -61,6 +61,7 @@
   {#each agvs as agv}
     <div class="agv-row">
       <span class="name">{agv.name}</span>
+      <span class="id">id: {agv.id}</span>
       <span class="status {agv.status}">{agv.status}</span>
       {#if showEditAgvStatus && canEdit($session?.role)}
         <button on:click={() => openEditor(agv)} disabled={loading}>
@@ -90,7 +91,8 @@
 
 .agv-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  grid-template-columns: 1fr auto auto auto;
   padding: 8px 10px;
   align-items: center;
   padding: 6px 8px;

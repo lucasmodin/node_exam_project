@@ -78,7 +78,8 @@
     <select bind:value={selectedAgv}>
         <option value="">Select AGV</option>
         {#each agvs as agv}
-            <option value={agv.id}>
+            <option value={agv.id}
+            disabled={agv.status === "error"}>
                 {agv.name} {(agv.status)}
             </option>
         {/each}

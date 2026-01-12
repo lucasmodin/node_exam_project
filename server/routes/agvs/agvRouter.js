@@ -27,7 +27,7 @@ router.get("/:id", isOperator, async (req, res) => {
 });
 
 router.post("/", isAdmin, async (req, res) => {
-    const { name, x = 0, y = 0 } = req.body;
+    const { name, x = 190, y = 70 } = req.body;
 
     if (!name) {
         return res.status(400).send({
@@ -61,7 +61,7 @@ router.patch("/:id", isSupervisor, async (req, res) => {
         });
     }
 
-    if (name !== undefined && name.trim() === "") {
+    if (name !== undefined || name.trim() === "") {
         return res.status(400).send({ error: "Name cannot be empty"});
     }
 

@@ -5,8 +5,8 @@ import { moveAgv } from './util/agvService.js';
 
 const STAGE_TO_STATION = {
     incoming: "INCOMING",
-    wash: "WASH_TABLE_1",
-    sterile: "CABINET_WASHER_1",
+    wash: "WASH_TABLE",
+    sterile: "CABINET_WASHER",
     delivered: "AGV_STATION"
 }
 
@@ -32,7 +32,7 @@ export default function jobHandlers(io, socket) {
             return;
         };
 
-        if (!name) {
+        if (name === undefined || name.trim() === "") {
             return socket.emit("system:message", {
                 type: "error",
                 message: "Job name is required"

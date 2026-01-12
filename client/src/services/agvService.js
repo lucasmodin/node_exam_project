@@ -16,10 +16,11 @@ export function updateAgv(updatedAgv) { //update ui store
     agvs.update(current => {
         const index = current.findIndex(agv => agv.id === updatedAgv.id);
 
-        if (index === -1) {
+        if (index === -1) { //if agv does not exist
             return [updatedAgv, ...current];
         }
 
+        //if agv exists
         return current.map(agv => 
             agv.id === updatedAgv.id ? updatedAgv : agv
         );

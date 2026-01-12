@@ -11,8 +11,17 @@ export async function loadEvents() {
     events.set(result.data);
 }
 
-export function addEvent(event) { 
+export function addEvent(newEvent) { 
     events.update(current => {
-        return [event, ...current].slice(0,100);
-    })
+        const index = current.findIndex(event => event.id === newEvent.id);
+
+        if (index === -1) { //if event not found
+            return [newEvent, ...current].slice(0, 100);
+        }
+
+        //if event exists
+        return current.map(event =>
+            event.id === newEvent.id ? newEvent : event
+        );
+    });
 }

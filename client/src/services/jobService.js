@@ -15,14 +15,13 @@ export async function updateJob(updatedJob) { //ui store
     jobs.update(current => {
         const index = current.findIndex(job => job.id === updatedJob.id);
 
-        if (index === -1) { 
+        if (index === -1) { //if job does not exists
             return [updatedJob, ...current];
         }
 
+        //if job exists
         return current.map(job =>
-            job.id === updatedJob.id
-                ? {...job, ...updatedJob}
-                : job
+            job.id === updatedJob.id ? updatedJob : job
         ); 
     });
 }
