@@ -9,7 +9,8 @@ router.post("/login", async(req, res) => {
     const { username, password } = req.body;
 
     const user = await db.get(
-        "SELECT * FROM users WHERE username = ?", [username]
+        "SELECT * FROM users WHERE LOWER(username) = LOWER(?)",
+        [username]
     );
 
     if (!user) {
