@@ -61,7 +61,7 @@ router.patch("/:id", isSupervisor, async (req, res) => {
         });
     }
 
-    if (name !== undefined || name.trim() === "") {
+    if (name === undefined || name.trim() === "") {
         return res.status(400).send({ error: "Name cannot be empty"});
     }
 

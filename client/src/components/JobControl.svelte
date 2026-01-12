@@ -6,12 +6,20 @@
     import { session } from '../stores/sessionStore.js';
     import socket from '../util/socket.js';
     import { deleteJob } from '../services/jobService.js';
+    import { systemMessage } from '../stores/systemMessageStore';
 
     $: activeJobs = jobs.filter(
         job => job.stage !== "delivered" && job.stage !== "ready"
     );
 
     $: isAdmin = $session?.role === "admin";
+
+    //for socket error messages
+    $: socketErrorMessage = 
+        $systemMessage?.type === "error" ? $systemMessage.message : "";
+
+    //to decide between local or socket error
+    $: displayErrorMessage = errorMsg || socketErrorMessage;
 
     let jobName = "";
     let selectedAgv = "";
@@ -99,8 +107,8 @@
         Create job
     </button>
 
-    {#if errorMsg}
-        <div class="error-message">{errorMsg}</div>
+    {#if displayErrorMessage}
+        <div class="error-message">{displayErrorMessage}</div>
     {/if}
 
     <hr />
